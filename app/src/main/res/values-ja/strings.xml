@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="last_updated">最終取得時間: %s</string>
+</resources>

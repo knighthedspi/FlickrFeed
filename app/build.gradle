@@ -18,12 +18,28 @@ android {
             execution 'ANDROIDX_TEST_ORCHESTRATOR'
         }
     }
+
+    signingConfigs {
+        release {
+            if (file('../keystore/signing.properties').exists()) {
+                Properties properties = new Properties()
+                file('../keystore/signing.properties').withReader { properties.load(it) }
+                keyAlias properties.keyAlias
+                keyPassword properties.keyPassword
+                storeFile file('../keystore/release.keystore')
+                storePassword properties.storePassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled true
+            signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     dataBinding {
         enabled = true
     }

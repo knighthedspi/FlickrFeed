@@ -19,7 +19,6 @@ import com.tigerspike.flickrfeed.data.api.model.ImagesResponse
 import com.tigerspike.flickrfeed.di.AppModule
 import com.tigerspike.flickrfeed.domain.translator.ImageItemTranslator
 import com.tigerspike.flickrfeed.domain.translator.ImageMediaTranslator
-import com.tigerspike.flickrfeed.domain.translator.ImagesResponseTranslator
 import com.tigerspike.flickrfeed.extension.toLocalDateTime
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer

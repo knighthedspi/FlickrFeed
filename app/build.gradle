@@ -14,6 +14,9 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testOptions {
+            execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        }
     }
     buildTypes {
         release {
@@ -119,7 +122,6 @@ android {
         androidTestImplementation 'androidx.test:runner:1.2.0'
         androidTestImplementation 'androidx.test:rules:1.2.0'
         androidTestImplementation 'androidx.test.ext:junit:1.1.1'
-        androidTestImplementation 'com.github.tmurakami:dexopener:2.0.4'
         androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
         androidTestImplementation "org.mockito:mockito-android:$mockitoVersion"
         androidTestImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
@@ -131,5 +133,8 @@ android {
         testImplementation 'androidx.arch.core:core-testing:2.1.0'
         testImplementation "org.mockito:mockito-core:$mockitoVersion"
         kaptAndroidTest 'com.google.dagger:dagger-compiler:2.24'
+
+        // mock server
+        androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.2.1"
     }
 }

@@ -29,6 +29,22 @@
                 tools:src="@drawable/ic_launcher_background"/>
 
             <TextView
+                android:id="@+id/title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin"
+                android:text="@{imageItem.title}"
+                android:textColor="@android:color/white"
+                android:shadowColor="@android:color/black"
+                android:shadowDx="2"
+                android:shadowDy="2"
+                android:shadowRadius="1"
+                app:layout_constraintTop_toTopOf="@+id/thumbnailView"
+                app:layout_constraintEnd_toEndOf="@+id/thumbnailView"
+                tools:text="Carcross.jpg"/>
+
+            <TextView
+                android:id="@+id/published_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/margin"

@@ -2,6 +2,7 @@ package com.tigerspike.flickrfeed.di
 
 import android.app.Application
 import android.content.SharedPreferences
+import androidx.annotation.VisibleForTesting
 import androidx.databinding.DataBindingComponent
 import androidx.preference.PreferenceManager
 import com.squareup.moshi.Moshi
@@ -11,6 +12,7 @@ import com.tigerspike.flickrfeed.data.api.internal.FlickrApi
 import dagger.Module
 import dagger.Provides
 import okhttp3.Call
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -24,7 +26,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @Module
 object AppModule {
 
-    private const val API_BASE_URL = "https://www.flickr.com"
+    @VisibleForTesting
+    var API_BASE_URL = "https://www.flickr.com"
 
     @JvmStatic @Provides
     fun application(application: FlickrApplication): Application {

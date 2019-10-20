@@ -1,0 +1,156 @@
+apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
+apply plugin: "androidx.navigation.safeargs.kotlin"
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "29.0.2"
+    defaultConfig {
+        applicationId "com.tigerspike.flickrfeed"
+        minSdkVersion 21
+        targetSdkVersion 29
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testOptions {
+            execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        }
+    }
+
+    signingConfigs {
+        release {
+            if (file('../keystore/signing.properties').exists()) {
+                Properties properties = new Properties()
+                file('../keystore/signing.properties').withReader { properties.load(it) }
+                keyAlias properties.keyAlias
+                keyPassword properties.keyPassword
+                storeFile file('../keystore/release.keystore')
+                storePassword properties.storePassword
+            }
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    dataBinding {
+        enabled = true
+    }
+
+    androidExtensions {
+        // @Parcelize
+        experimental = true
+    }
+
+    dexOptions {
+        preDexLibraries true
+    }
+
+    lintOptions {
+        abortOnError true
+        checkReleaseBuilds true
+        disable 'ContentDescription', 'InvalidPackage', 'RtlHardcoded'
+        xmlReport true
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kapt {
+        // to use Dagger2 and other kapt together
+        correctErrorTypes = true
+        javacOptions {
+            // to show Dagger2 and DataBinding errors
+            option("-Xmaxerrs", 10000)
+        }
+    }
+
+    dependencies {
+        implementation fileTree(dir: 'libs', include: ['*.jar'])
+        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion"
+
+        // material layout
+        implementation("com.google.android.material:material:1.0.0")
+
+        // AndroidX
+        implementation 'androidx.appcompat:appcompat:1.1.0'
+        implementation 'androidx.core:core-ktx:1.1.0'
+        implementation "androidx.recyclerview:recyclerview:$androidxVersion"
+        implementation "androidx.cardview:cardview:$androidxVersion"
+        implementation "androidx.browser:browser:$androidxVersion"
+        implementation "androidx.constraintlayout:constraintlayout:2.0.0-beta2"
+        implementation 'androidx.preference:preference-ktx:1.1.0'
+        implementation "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion"
+        implementation "androidx.lifecycle:lifecycle-common-java8:$lifecycleVersion"
+        implementation "androidx.navigation:navigation-fragment-ktx:$navigationVersion"
+        implementation "androidx.navigation:navigation-ui-ktx:$navigationVersion"
+
+        // Flexbox
+        implementation "com.google.android:flexbox:1.1.0"
+
+        // RxAndroid
+        implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
+        implementation "io.reactivex.rxjava2:rxjava:2.2.9"
+        implementation "io.reactivex.rxjava2:rxkotlin:2.3.0"
+
+        // API request
+        implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
+        implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+        implementation "com.squareup.retrofit2:converter-moshi:$retrofitVersion"
+        implementation "com.squareup.moshi:moshi-kotlin:1.8.0"
+        implementation 'com.squareup.okhttp3:logging-interceptor:4.2.2'
+
+        // Date time
+        implementation 'com.jakewharton.threetenabp:threetenabp:1.2.1'
+
+        // Log
+        implementation "com.jakewharton.timber:timber:4.7.1"
+
+        // Image view
+        implementation 'com.github.bumptech.glide:glide:4.10.0'
+        kapt 'com.github.bumptech.glide:compiler:4.10.0'
+
+        // DI
+        implementation "com.google.dagger:dagger-android:$daggerVersion"
+        implementation "com.google.dagger:dagger-android-support:$daggerVersion"
+        kapt "com.google.dagger:dagger-compiler:$daggerVersion"
+        kapt "com.google.dagger:dagger-android-processor:$daggerVersion"
+
+        // UI Test
+        androidTestImplementation "androidx.test.espresso:espresso-core:$espressoVersion"
+        androidTestImplementation "androidx.test.espresso:espresso-contrib:$espressoVersion"
+        androidTestImplementation "androidx.test.espresso:espresso-intents:$espressoVersion"
+        androidTestImplementation "androidx.test.espresso:espresso-accessibility:$espressoVersion"
+        androidTestImplementation "androidx.test.espresso:espresso-web:$espressoVersion"
+        androidTestImplementation "androidx.test.espresso.idling:idling-concurrent:$espressoVersion"
+        androidTestImplementation "androidx.test.espresso:espresso-idling-resource:$espressoVersion"
+        androidTestImplementation 'androidx.arch.core:core-testing:2.1.0'
+        androidTestImplementation 'androidx.test:core:1.2.0'
+        androidTestImplementation 'androidx.test:runner:1.2.0'
+        androidTestImplementation 'androidx.test:rules:1.2.0'
+        androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+        androidTestImplementation "org.mockito:mockito-core:$mockitoVersion"
+        androidTestImplementation "org.mockito:mockito-android:$mockitoVersion"
+        androidTestImplementation 'com.nhaarman:mockito-kotlin:1.5.0'
+        androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlinVersion"
+        androidTestUtil 'androidx.test:orchestrator:1.2.0'
+
+        // Unit Test
+        testImplementation "junit:junit:4.12"
+        testImplementation 'androidx.arch.core:core-testing:2.1.0'
+        testImplementation "org.mockito:mockito-core:$mockitoVersion"
+        kaptAndroidTest 'com.google.dagger:dagger-compiler:2.24'
+
+        // mock server
+        androidTestImplementation "com.squareup.okhttp3:mockwebserver:4.2.1"
+    }
+}

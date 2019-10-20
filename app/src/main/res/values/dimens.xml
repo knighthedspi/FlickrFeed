@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="image_corner">8dp</dimen>
+    <dimen name="image_height">320dp</dimen>
+    <dimen name="margin">8dp</dimen>
+    <dimen name="text_size">14sp</dimen>
+</resources>

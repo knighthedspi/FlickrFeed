@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="lastUpdated"
+            type="String" />
+    </data>
+
+    <TextView
+        android:id="@+id/last_updated_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="@{lastUpdated != null ? View.VISIBLE : View.GONE}"
+        android:text="@{@string/last_updated(lastUpdated)}"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="@dimen/text_size"
+        android:textStyle="bold"
+        tools:text="Updated: 2019-05-22 17:27"/>
+
+</layout>

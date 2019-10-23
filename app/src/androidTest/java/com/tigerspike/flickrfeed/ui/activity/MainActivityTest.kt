@@ -1,8 +1,10 @@
 package com.tigerspike.flickrfeed.ui.activity
 
 import android.content.Intent
+import android.view.View
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.espresso.Espresso.onView
+import androidx.test.espresso.IdlingRegistry
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -20,6 +22,7 @@ import com.tigerspike.flickrfeed.di.AppModule
 import com.tigerspike.flickrfeed.domain.translator.ImageItemTranslator
 import com.tigerspike.flickrfeed.domain.translator.ImageMediaTranslator
 import com.tigerspike.flickrfeed.extension.toLocalDateTime
+import com.tigerspike.flickrfeed.idlingresource.ViewVisibilityIdlingResource
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.After
@@ -45,6 +48,7 @@ class MainActivityTest {
     private lateinit var imageItemTranslator: ImageItemTranslator
     private lateinit var mockWebServer: MockWebServer
     private val portNumber = 8080
+    private lateinit var viewVisibilityIdlingResource: ViewVisibilityIdlingResource
 
     @Before
     fun setUp() {
@@ -61,13 +65,11 @@ class MainActivityTest {
     @Throws
     fun tearDown() {
         mockWebServer.shutdown()
+        IdlingRegistry.getInstance().unregister(viewVisibilityIdlingResource)
     }
 
     @Test
     fun testShowUI() {
-        val intent = Intent()
-        testRule.launchActivity(intent)
-
         // mock response
         val response = ImagesResponse(
             "Uploads from everyone",
@@ -118,10 +120,18 @@ class MainActivityTest {
             .setBodyDelay(1, TimeUnit.SECONDS)
         mockWebServer.enqueue(mockResponse)
 
-        // wait until network request done
-        Thread.sleep(3000)
+        val intent = Intent()
+        testRule.launchActivity(intent)
 
         val activity = testRule.activity
+
+        viewVisibilityIdlingResource = ViewVisibilityIdlingResource(
+            activity.findViewById(R.id.progress_bar),
+            View.GONE
+        )
+
+        IdlingRegistry.getInstance().register(viewVisibilityIdlingResource)
+
         withId(R.id.progress_bar).matches(
             withEffectiveVisibility(Visibility.GONE)
         )
